@@ -3,7 +3,7 @@ import os
 
 class Values:
 
-    MODEL_PATH = os.path.join('models', 'AIRacer_FPV_corners.tflite')
+    MODEL_PATH = os.path.join('models', 'yolov7_balloon.onnx')
 
     DETECTION_THRESHOLD = 0.499  #0.61
 
