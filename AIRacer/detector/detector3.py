@@ -43,6 +43,7 @@ class Detector:
         self.outname = [i.name for i in self.session.get_outputs()]
         self.inname = [i.name for i in self.session.get_inputs()]
         self.frame = None
+        self.last_detection = None
 
     def detect(self, img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -63,7 +64,7 @@ class Detector:
         ori_images = [img.copy()]
 
         # target position in px
-        best_mid = [1, 1]
+        best_mid = None
         best_score = 0
 
         for i,(batch_id,x0,y0,x1,y1,cls_id,score) in enumerate(outputs):
@@ -83,4 +84,7 @@ class Detector:
 
         self.frame = ori_images[0]
 
-        return best_mid, 1
+        best_mid = best_mid or self.last_detection
+        self.last_detection = best_mid
+
+        return (best_mid, 1) if best_mid is not None else ([0, 0], 1)
