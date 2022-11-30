@@ -38,12 +38,15 @@ def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleu
 
 class Detector:
     def __init__(self, model_path):
-        providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']
+        providers = [
+            'CUDAExecutionProvider',
+            # 'CPUExecutionProvider'
+        ]
         self.session = ort.InferenceSession(model_path, providers=providers)
         self.outname = [i.name for i in self.session.get_outputs()]
         self.inname = [i.name for i in self.session.get_inputs()]
         self.frame = None
-        self.last_detection = None
+        self.last_detection = [320, 240]
 
     def detect(self, img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -83,8 +86,15 @@ class Detector:
                 cv2.putText(image,str(score),(box[0], box[1] - 2),cv2.FONT_HERSHEY_SIMPLEX,0.75,[225, 255, 255],thickness=2)  
 
         self.frame = ori_images[0]
-
-        best_mid = best_mid or self.last_detection
+        print(self.last_detection[0])
+        if self.last_detection[0] < 0:
+            const_out = [40, 240]
+        if self.last_detection[0] > 0:
+            const_out = [600, 240]
+        if self.last_detection[0] == 0:
+            const_out = [320, 240]
+        const_out = [self.last_detection[0],240]
+        best_mid = best_mid or const_out#self.last_detection
         self.last_detection = best_mid
 
-        return (best_mid, 1) if best_mid is not None else ([0, 0], 1)
+        return (best_mid+[0,0], 1) if best_mid is not None else ([0, 0], 1)

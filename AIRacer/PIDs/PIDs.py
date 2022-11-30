@@ -127,11 +127,12 @@ class PIDs:
 
     def update(self, mid, ratio):
         in_min = 0
-        in_max = 1
+        in_maxX = 640
+        in_maxY = 480
         out_max = 1
         out_min = -1
-        mid[0] = (mid[0] - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-        mid[1] = -((mid[1] - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+        mid[0] = (mid[0] - in_min) * (out_max - out_min) / (in_maxX - in_min) + out_min
+        mid[1] = -((mid[1] - in_min) * (out_max - out_min) / (in_maxY - in_min) + out_min)
         if mid[0] < 0:
             ratio *= -1
         self.yawPID.update(-mid[0])
