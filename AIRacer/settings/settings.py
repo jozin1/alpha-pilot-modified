@@ -19,7 +19,7 @@ class Values:
 
     WINDOWS_TESTS = False
 
-    CAMERA = 1
+    CAMERA = 0
     CAMERA_WIDTH = 640
     CAMERA_HEIGHT = 480
     FPS = 122
