@@ -3,7 +3,7 @@ import os
 
 class Values:
 
-    MODEL_PATH = os.path.join('models', 'yolov7_tiny_balloon.onnx')
+    MODEL_PATH = os.path.join('models', 'yolov7_tiny_balloon_v3.onnx')
 
     DETECTION_THRESHOLD = 0.499  #0.61
 
@@ -19,7 +19,7 @@ class Values:
 
     WINDOWS_TESTS = False
 
-    CAMERA = 0
+    CAMERA = 1
     CAMERA_WIDTH = 640
     CAMERA_HEIGHT = 480
     FPS = 122

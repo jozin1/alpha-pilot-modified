@@ -82,13 +82,7 @@ class PIDs:
                         time.sleep(3)
                         self.ppm.update_ppm_channels([1500, 1500, 1000, 1500, 1800, 1800, 1000, 1000])
                         time.sleep(3)
-                        self.ppm.update_ppm_channels([1500, 1500, 1000, 1500, 1800, 1100, 1000, 1000])
-                        time.sleep(3)
-                        self.ppm.update_ppm_channels([1500, 1500, 1750, 1500, 1800, 1100, 1000, 1000])
-                        print("gora")
-                        time.sleep(2)
-                        self.ppm.update_ppm_channels([1500, 1500, 1500, 1500, 1800, 1100, 1000, 1000])
-                        print("stop")
+
                         """time.sleep(5)
                         self.ppm.update_ppm_channels([1800, 1500, 1500, 1500, 1800, 1100, 1000, 1000])
                         print("prawo")
@@ -104,7 +98,14 @@ class PIDs:
                     ax = self.rollPID.output_ppm 
                     if(int(self.rollPID.output_ppm) > 1510 or int(self.rollPID.output_ppm)< 1490):
                         ax += 250
-                    vals = [int(ax), 1500, int(self.throttlePID.output_ppm), int(self.yawPID.output_ppm), 1800, 1100, 1000,
+                    thr = int(self.throttlePID.output_ppm)-170
+                    thrmin = 1500-170-50
+                    thrmax = 1500-170+50
+                    if(thr > thrmax):
+                        thr = thrmax
+                    if(thr < thrmin):
+                        thr = thrmin
+                    vals = [int(self.yawPID.output_ppm), 1535, thr, int(self.yawPID.output_ppm), 1800, 1500, 1000,
                             1000]
                     self.ppm.update_ppm_channels(vals)
                     #print(vals)
@@ -114,6 +115,7 @@ class PIDs:
 
                 self.ppm.update_ppm_channels([1500, 1500, 1000, 1500, 1100, 1800, 1000, 1000])
                 self.first_start = True
+
 
     def calculate_pids(self):
         if self.update_pids:
@@ -136,7 +138,7 @@ class PIDs:
         if mid[0] < 0:
             ratio *= -1
         self.yawPID.update(-mid[0])
-        #self.rollPID.update(-ratio)
+        self.rollPID.update(-mid[0])
         self.throttlePID.update(-mid[1])
 
     def get_pid_values(self):
